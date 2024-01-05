@@ -1,5 +1,7 @@
 import 'package:bislerium_cafe/features/addins/addins_screen.dart';
+import 'package:bislerium_cafe/features/coffee/coffee_screen.dart';
 import 'package:bislerium_cafe/features/login/registration.dart';
+import 'package:bislerium_cafe/features/orders/order_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -19,7 +21,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: AddInScreen(),
+      home: MemberButton(),
     );
   }
 }

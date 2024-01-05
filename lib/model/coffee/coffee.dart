@@ -1,11 +1,11 @@
-class AddIn {
+class Coffee {
   int id;
   String name;
   double price;
 
-  AddIn({required this.id, required this.name, required this.price});
+  Coffee({required this.id, required this.name, required this.price});
 
-  factory AddIn.fromJson(Map<String, dynamic> json) {
+  factory Coffee.fromJson(Map<String, dynamic> json) {
     dynamic priceValue = json['price'];
 
 // Check the type of the value and convert it to double accordingly
@@ -20,7 +20,7 @@ class AddIn {
       // Handle other cases or provide a default value
       throw Exception('Unexpected type for price: ${priceValue.runtimeType}');
     }
-    return AddIn(id: json['id'], name: json['name'], price: priceDouble);
+    return Coffee(id: json['id'], name: json['name'], price: priceDouble);
   }
 
   Map<String, dynamic> toJson() {

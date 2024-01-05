@@ -1,24 +1,26 @@
 import 'dart:convert';
 
 import 'package:bislerium_cafe/constants/backend_constants.dart';
+import 'package:bislerium_cafe/constants/module_name.dart';
 import 'package:bislerium_cafe/helper/service_snack_bar.dart';
-import 'package:bislerium_cafe/model/addin/add_in.dart';
+import 'package:bislerium_cafe/model/coffee/coffee.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class AddInService {
-  static Future<List<AddIn>> getAddIn(BuildContext context) async {
-    final response = await http.get(Uri.parse("${Backend.apiConstant}/addin"));
+class CoffeeService {
+  static Future<List<Coffee>> getCoffee(BuildContext context) async {
+    final response = await http
+        .get(Uri.parse("${Backend.apiConstant}/${ModuleName.COFFEE}"));
 
     final Map<String, dynamic> responseBody = json.decode(response.body);
 
-    List<AddIn> addInList = [];
+    List<Coffee> addInList = [];
     if (responseBody["status"] == 1) {
       List<dynamic> jsonDataList = responseBody['data'];
 
       for (var jsonData in jsonDataList) {
-        AddIn addIn = AddIn.fromJson(jsonData);
-        addInList.add(addIn);
+        Coffee coffee = Coffee.fromJson(jsonData);
+        addInList.add(coffee);
       }
       return addInList;
     } else {
@@ -27,11 +29,11 @@ class AddInService {
     }
   }
 
-  static Future<void> addAddIn(
+  static Future<void> addCoffee(
       Map<String, dynamic> map, BuildContext context) async {
     //POST operation starts from here
     final response = await http.post(
-      Uri.parse("${Backend.apiConstant}/addin"),
+      Uri.parse("${Backend.apiConstant}/${ModuleName.COFFEE}"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -46,10 +48,10 @@ class AddInService {
     }
   }
 
-  static Future<void> deleteAddIn(int id, BuildContext context) async {
+  static Future<void> deleteCoffee(int id, BuildContext context) async {
     //POST operation starts from here
     final response = await http.delete(
-      Uri.parse("${Backend.apiConstant}/addin/$id"),
+      Uri.parse("${Backend.apiConstant}/${ModuleName.COFFEE}/$id"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
