@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   window_manager: ^0.3.7
   http: ^1.1.0
+  draggable_scrollbar: ^0.1.0
 
 dev_dependencies:
   flutter_test:

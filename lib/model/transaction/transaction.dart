@@ -1,24 +1,20 @@
-import 'package:bislerium_cafe/model/addin/add_in.dart';
-
-class Order {
+class Transaction {
   int id;
   String memberName;
   String date;
   double price;
   String coffeeName;
   List<String> addInName;
-  int memberId;
 
-  Order(
+  Transaction(
       {required this.id,
       required this.memberName,
       required this.date,
       required this.price,
       required this.coffeeName,
-      required this.addInName,
-      required this.memberId});
+      required this.addInName});
 
-  factory Order.fromJson(Map<String, dynamic> json) {
+  factory Transaction.fromJson(Map<String, dynamic> json) {
     dynamic priceValue = json['price'];
 
 // Check the type of the value and convert it to double accordingly
@@ -33,7 +29,7 @@ class Order {
       // Handle other cases or provide a default value
       throw Exception('Unexpected type for price: ${priceValue.runtimeType}');
     }
-    return Order(
+    return Transaction(
         id: json['id'],
         memberName: json['memberName'],
         price: priceDouble,
@@ -41,7 +37,6 @@ class Order {
             .map((item) => item.toString())
             .toList(),
         coffeeName: json['coffeeName'],
-        date: json['date'],
-        memberId: json['memberId']);
+        date: json['date']);
   }
 }
