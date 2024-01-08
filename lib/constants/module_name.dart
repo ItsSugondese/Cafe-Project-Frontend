@@ -4,4 +4,5 @@ class ModuleName {
   static String MEMBER = "member";
   static String ORDER = "order";
   static String TRANSACTION = "transaction";
+  static String TEMPORARY_ATTACHMENTS = "temporary-attachments";
 }
