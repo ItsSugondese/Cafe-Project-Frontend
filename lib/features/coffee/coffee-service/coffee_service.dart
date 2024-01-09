@@ -1,4 +1,7 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
 
 import 'package:bislerium_cafe/constants/backend_constants.dart';
 import 'package:bislerium_cafe/constants/module_name.dart';
@@ -20,12 +23,39 @@ class CoffeeService {
 
       for (var jsonData in jsonDataList) {
         Coffee coffee = Coffee.fromJson(jsonData);
+        try {
+          coffee.image = await fetchBlobData(context, coffee.id);
+        } catch (e) {
+          print('Error fetching image: $e');
+        }
         addInList.add(coffee);
       }
       return addInList;
     } else {
       ServiceHelper.showErrorSnackBar(context, responseBody["message"]);
       throw Exception("Hello");
+    }
+  }
+
+  static Future<Uint8List> fetchBlobData(
+      BuildContext context, int photoId) async {
+    try {
+      final response = await http.get(
+        Uri.parse("${Backend.apiConstant}/${ModuleName.COFFEE}/doc/$photoId"),
+      );
+
+      if (response.statusCode == 200) {
+        return Uint8List.fromList(response.bodyBytes);
+      } else {
+        String message = 'Failed to fetch blob data';
+        final Map<String, dynamic> responseBody = json.decode(response.body);
+        ServiceHelper.showErrorSnackBar(context, message);
+        throw Exception(message);
+      }
+    } catch (e) {
+      // Handle any other exceptions here
+      ServiceHelper.showErrorSnackBar(context, 'Error fetching image: $e');
+      rethrow; // Rethrow the exception to preserve the original stack trace
     }
   }
 

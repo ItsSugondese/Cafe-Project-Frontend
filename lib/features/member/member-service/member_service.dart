@@ -16,15 +16,29 @@ class MemberService {
 
     final Map<String, dynamic> responseBody = json.decode(response.body);
 
-    List<Member> addInList = [];
+    List<Member> memberList = [];
     if (responseBody["status"] == 1) {
       List<dynamic> jsonDataList = responseBody['data'];
 
       for (var jsonData in jsonDataList) {
         Member member = Member.fromJson(jsonData);
-        addInList.add(member);
+        memberList.add(member);
       }
-      return addInList;
+      return memberList;
+    } else {
+      ServiceHelper.showErrorSnackBar(context, responseBody["message"]);
+      throw Exception("Hello");
+    }
+  }
+
+  static Future<bool> toggleMembership(BuildContext context, int id) async {
+    final response = await http.get(
+        Uri.parse("${Backend.apiConstant}/${ModuleName.MEMBER}/toggle/$id"));
+
+    final Map<String, dynamic> responseBody = json.decode(response.body);
+
+    if (responseBody["status"] == 1) {
+      return responseBody['data'];
     } else {
       ServiceHelper.showErrorSnackBar(context, responseBody["message"]);
       throw Exception("Hello");

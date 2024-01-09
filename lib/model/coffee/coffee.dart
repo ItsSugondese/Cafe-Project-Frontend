@@ -1,7 +1,10 @@
+import 'dart:typed_data';
+
 class Coffee {
   int id;
   String name;
   double price;
+  Uint8List? image;
 
   Coffee({required this.id, required this.name, required this.price});
 

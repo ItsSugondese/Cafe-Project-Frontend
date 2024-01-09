@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:bislerium_cafe/features/coffee/add_coffee_screen.dart';
 import 'package:bislerium_cafe/features/coffee/coffee-service/coffee_service.dart';
 import 'package:bislerium_cafe/model/coffee/coffee.dart';
@@ -59,9 +61,8 @@ class _CoffeeScreenState extends State<CoffeeScreen> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => AddCoffeeScreen(
-                                          id: coffee.id,
-                                          name: coffee.name,
-                                          price: coffee.price)),
+                                            coffee: coffee,
+                                          )),
                                 ).then((value) {
                                   setState(() {
                                     coffees = CoffeeService.getCoffee(context);
@@ -70,21 +71,22 @@ class _CoffeeScreenState extends State<CoffeeScreen> {
                               },
                               child: SizedBox(
                                 width: 300,
-                                height: 100,
+                                height: 150,
                                 child: Column(children: [
-                                  // menuWithImage.image != null
-                                  //     ? Image.memory(
-                                  //         menuWithImage.image ?? Uint8List(0),
-                                  //         width: 100,
-                                  //         height: 100,
-                                  //         fit: BoxFit.cover,
-                                  //       )
-                                  //     : Image.asset(
-                                  //         'assets/images/tuteelogo.png', // The path to the asset within your app
-                                  //         width: 100,
-                                  //         height: 100,
-                                  //         fit: BoxFit.cover,
-                                  //       ),
+                                  coffee.image != null
+                                      ? Image.memory(
+                                          coffee.image ?? Uint8List(0),
+                                          width: 100,
+                                          height: 100,
+                                          fit: BoxFit.cover,
+                                        )
+                                      : Image.memory(
+                                          Uint8List(
+                                              0), // The path to the asset within your app
+                                          width: 100,
+                                          height: 100,
+                                          fit: BoxFit.cover,
+                                        ),
                                   Column(
                                     children: [
                                       Text(coffee.name),

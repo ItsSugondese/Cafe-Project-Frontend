@@ -27,12 +27,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
       appBar: AppBar(
         title: Text('Coffee'),
       ),
-      body: Scrollbar(
-        child: FutureBuilder<List<Order>>(
-            future: ordersList,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return Center(
+      body: FutureBuilder<List<Order>>(
+          future: ordersList,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return Center(
+                child: Scrollbar(
+                  controller: _firstController,
                   child: ListView.builder(
                       scrollDirection: Axis.vertical,
                       controller: _firstController,
@@ -124,16 +125,16 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           ],
                         );
                       }),
-                );
-              } else if (snapshot.hasError) {
-                return Column(
-                  children: [Text("${snapshot.error}")],
-                );
-              } else {
-                return CircularProgressIndicator();
-              }
-            }),
-      ),
+                ),
+              );
+            } else if (snapshot.hasError) {
+              return Column(
+                children: [Text("${snapshot.error}")],
+              );
+            } else {
+              return CircularProgressIndicator();
+            }
+          }),
     );
   }
 }

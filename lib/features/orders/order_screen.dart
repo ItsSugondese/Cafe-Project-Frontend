@@ -16,6 +16,7 @@ class OrderScreen extends StatefulWidget {
 class _OrderScreenState extends State<OrderScreen> {
   Member? selectedMember;
   Coffee? selectedCoffee;
+  double? realCoffeePrice;
   List<AddIn> selectedAddIns = [];
   final ScrollController _firstController = ScrollController();
   final ScrollController _secondController = ScrollController();
@@ -34,6 +35,16 @@ class _OrderScreenState extends State<OrderScreen> {
                   _showMemberPopup(context, (member) {
                     setState(() {
                       selectedMember = member;
+                      if (selectedCoffee != null) {
+                        if (selectedMember!.coffeeCount >= 10) {
+                          selectedCoffee!.price = 0;
+                        } else if (selectedMember!.isMember) {
+                          selectedCoffee!.price = selectedCoffee!.price -
+                              ((10 / 100) * selectedCoffee!.price);
+                        } else {
+                          selectedCoffee!.price = realCoffeePrice!;
+                        }
+                      }
                     });
                   });
                 },
@@ -52,6 +63,17 @@ class _OrderScreenState extends State<OrderScreen> {
                   _showCoffeePopup(context, (coffee) {
                     setState(() {
                       selectedCoffee = coffee;
+                      realCoffeePrice = selectedCoffee!.price;
+                      if (selectedMember != null) {
+                        if (selectedMember!.coffeeCount >= 10) {
+                          selectedCoffee!.price = 0;
+                        } else if (selectedMember!.isMember) {
+                          selectedCoffee!.price = selectedCoffee!.price -
+                              ((10 / 100) * selectedCoffee!.price);
+                        } else {
+                          selectedCoffee!.price = realCoffeePrice!;
+                        }
+                      }
                     });
                   });
                 },
@@ -85,8 +107,11 @@ class _OrderScreenState extends State<OrderScreen> {
                     OrderService.addOrder(
                         OrderRequest(
                                 memberId: selectedMember!.id,
-                                hadDiscount: false,
-                                wasRedeem: false,
+                                hadDiscount:
+                                    selectedMember!.isMember ? true : false,
+                                wasRedeem: selectedMember!.coffeeCount >= 10
+                                    ? true
+                                    : false,
                                 price: priceCalculation(),
                                 coffeeId: selectedCoffee!.id,
                                 hadAddIn:

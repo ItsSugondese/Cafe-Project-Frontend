@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bislerium_cafe/features/coffee/coffee-service/coffee_service.dart';
+import 'package:bislerium_cafe/model/coffee/coffee.dart';
 import 'package:bislerium_cafe/podo/coffee/coffee_request.dart';
 import 'package:bislerium_cafe/services/temporary-attachments/temporary_attachments_service.dart';
 import 'package:flutter/material.dart';
@@ -8,12 +9,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
 
 class AddCoffeeScreen extends StatefulWidget {
-  int? id;
-  double? price;
-  String? name;
+  Coffee? coffee;
 
   // Use the constructor to receive the data
-  AddCoffeeScreen({Key? key, this.id, this.name, this.price}) : super(key: key);
+  AddCoffeeScreen({Key? key, this.coffee}) : super(key: key);
 
   @override
   State<AddCoffeeScreen> createState() => _AddCoffeeScreenState();
@@ -79,15 +78,12 @@ class _AddCoffeeScreenState extends State<AddCoffeeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.id != null) {
-      _coffeeIdController.text = widget.id.toString();
+    if (widget.coffee != null) {
+      _coffeeIdController.text = widget.coffee!.id.toString();
+      _coffeePriceController.text = widget.coffee!.price.toString();
+      _coffeeNameController.text = widget.coffee!.name.toString();
     }
-    if (widget.price != null) {
-      _coffeePriceController.text = widget.price.toString();
-    }
-    if (widget.name != null) {
-      _coffeeNameController.text = widget.name.toString();
-    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Add Item'),
