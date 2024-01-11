@@ -2,6 +2,7 @@ import 'package:bislerium_cafe/features/addins/select_add_in_screen.dart';
 import 'package:bislerium_cafe/features/coffee/select_coffee_screen.dart';
 import 'package:bislerium_cafe/features/member/select_member_screen.dart';
 import 'package:bislerium_cafe/features/orders/order-service/order_service.dart';
+import 'package:bislerium_cafe/helper/drawer.dart';
 import 'package:bislerium_cafe/model/addin/add_in.dart';
 import 'package:bislerium_cafe/model/coffee/coffee.dart';
 import 'package:bislerium_cafe/model/member/member.dart';
@@ -26,6 +27,7 @@ class _OrderScreenState extends State<OrderScreen> {
       appBar: AppBar(
         title: Text('Order'),
       ),
+      drawer: MyDrawer(),
       body: Column(
         children: [
           Row(

@@ -1,5 +1,6 @@
 import 'package:bislerium_cafe/features/orders/order-service/order_service.dart';
 import 'package:bislerium_cafe/features/transaction/transaction-service/transaction_service.dart';
+import 'package:bislerium_cafe/helper/drawer.dart';
 import 'package:bislerium_cafe/model/orders/order.dart';
 import 'package:bislerium_cafe/podo/transaction/transaction_request.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
       appBar: AppBar(
         title: Text('Coffee'),
       ),
+      drawer: MyDrawer(),
       body: FutureBuilder<List<Order>>(
           future: ordersList,
           builder: (context, snapshot) {

@@ -2,6 +2,8 @@ import 'dart:typed_data';
 
 import 'package:bislerium_cafe/features/coffee/add_coffee_screen.dart';
 import 'package:bislerium_cafe/features/coffee/coffee-service/coffee_service.dart';
+import 'package:bislerium_cafe/helper/drawer.dart';
+import 'package:bislerium_cafe/helper/password_pop_up.dart';
 import 'package:bislerium_cafe/model/coffee/coffee.dart';
 import 'package:flutter/material.dart';
 
@@ -19,6 +21,7 @@ class _CoffeeScreenState extends State<CoffeeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    PasswordPopUp.showPasswordPopUpDialog(context);
     coffees = CoffeeService.getCoffee(context);
   }
 
@@ -28,6 +31,7 @@ class _CoffeeScreenState extends State<CoffeeScreen> {
       appBar: AppBar(
         title: Text('Coffee'),
       ),
+      drawer: MyDrawer(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Navigate to the AddItemScreen when the button is pressed
@@ -46,22 +50,39 @@ class _CoffeeScreenState extends State<CoffeeScreen> {
           future: coffees,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
+              List<Coffee> listOfCoffee = snapshot.data ?? [];
               return Center(
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: snapshot.data?.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      Coffee coffee = snapshot.data![index];
-                      return Row(
-                        children: [
-                          Card(
-                            child: GestureDetector(
-                              onTap: () {
+                heightFactor: 1,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: DataTable(
+                    dataRowHeight: 200,
+                    columnSpacing: 200,
+                    columns: [
+                      DataColumn(label: Text('')),
+                      DataColumn(label: Text('Name')),
+                      DataColumn(label: Text('Price')),
+                      DataColumn(label: Text('Action')),
+                    ],
+                    rows: listOfCoffee.map((coffeeMap) {
+                      return DataRow(cells: [
+                        DataCell(Image.memory(
+                          coffeeMap.image ?? Uint8List(0),
+                          width: 200,
+                          fit: BoxFit.cover,
+                        )),
+                        DataCell(Text(coffeeMap.name)),
+                        DataCell(Text("${coffeeMap.price}")),
+                        DataCell(Row(
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.edit),
+                              onPressed: () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => AddCoffeeScreen(
-                                            coffee: coffee,
+                                            coffee: coffeeMap,
                                           )),
                                 ).then((value) {
                                   setState(() {
@@ -69,50 +90,28 @@ class _CoffeeScreenState extends State<CoffeeScreen> {
                                   });
                                 });
                               },
-                              child: SizedBox(
-                                width: 300,
-                                height: 150,
-                                child: Column(children: [
-                                  coffee.image != null
-                                      ? Image.memory(
-                                          coffee.image ?? Uint8List(0),
-                                          width: 100,
-                                          height: 100,
-                                          fit: BoxFit.cover,
-                                        )
-                                      : Image.memory(
-                                          Uint8List(
-                                              0), // The path to the asset within your app
-                                          width: 100,
-                                          height: 100,
-                                          fit: BoxFit.cover,
-                                        ),
-                                  Column(
-                                    children: [
-                                      Text(coffee.name),
-                                      Text("Rs. ${coffee.price}"),
-                                    ],
-                                  ),
-                                ]),
-                              ),
                             ),
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.delete),
-                            onPressed: () {
-                              _showDeleteConfirmationDialog(context, coffee.id)
-                                  .then((value) {
-                                if (value) {
-                                  setState(() {
-                                    coffees = CoffeeService.getCoffee(context);
-                                  });
-                                }
-                              });
-                            },
-                          )
-                        ],
-                      );
-                    }),
+                            IconButton(
+                              icon: const Icon(Icons.delete),
+                              onPressed: () {
+                                _showDeleteConfirmationDialog(
+                                        context, coffeeMap.id)
+                                    .then((value) {
+                                  if (value) {
+                                    setState(() {
+                                      coffees =
+                                          CoffeeService.getCoffee(context);
+                                    });
+                                  }
+                                });
+                              },
+                            )
+                          ],
+                        )),
+                      ]);
+                    }).toList(),
+                  ),
+                ),
               );
             } else if (snapshot.hasError) {
               return Column(

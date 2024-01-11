@@ -1,5 +1,7 @@
 import 'package:bislerium_cafe/enums/role.dart';
 import 'package:bislerium_cafe/features/login/login-service/login_service.dart';
+import 'package:bislerium_cafe/features/transaction/transaction_screen.dart';
+import 'package:bislerium_cafe/helper/store_service.dart';
 import 'package:bislerium_cafe/model/user/user.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +12,6 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController textEditingController = TextEditingController();
   TextEditingController passwordEditingController = TextEditingController();
-  List<String> list = <String>['One', 'Two', 'Three', 'Four'];
   String? errorMessage;
   String? selected;
   @override
@@ -85,29 +86,40 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Padding(
                     padding: EdgeInsets.all(20),
                     child: ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            if (selected == null ||
-                                passwordEditingController.text
-                                    .toString()
-                                    .isEmpty) {
+                        onPressed: () async {
+                          if (selected == null ||
+                              passwordEditingController.text
+                                  .toString()
+                                  .isEmpty) {
+                            setState(() {
                               errorMessage = "TExt is empty";
-                            } else {
-                              errorMessage = null;
-                              // Navigator.of(context).push(
-                              // MaterialPageRoute(
-                              // builder: (context) =>
-                              // const SongScreen(song: song),
-                              // ),
-                              // );
+                            });
+                          } else {
+                            errorMessage = null;
+                            // Navigator.of(context).push(
+                            // MaterialPageRoute(
+                            // builder: (context) =>
+                            // const SongScreen(song: song),
+                            // ),
+                            // );
 
-                              User user = User(
-                                  UserType: selected,
-                                  Password: passwordEditingController.text);
+                            User user = User(
+                                UserType: selected,
+                                Password: passwordEditingController.text);
 
-                              login(user.toJson());
+                            bool status = await LoginService.login(
+                                context, user.toJson());
+                            if (status) {
+                              StoreService.setRoles(selected!);
+                              StoreService.setPassword(
+                                  passwordEditingController.text);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => TransactionScreen()),
+                              );
                             }
-                          });
+                          }
                         },
                         child: const Text("Login")),
                   ),

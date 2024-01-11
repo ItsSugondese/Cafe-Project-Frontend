@@ -1,3 +1,4 @@
+import 'package:bislerium_cafe/features/addins/add_addins_screen.dart';
 import 'package:bislerium_cafe/features/addins/addins_screen.dart';
 import 'package:bislerium_cafe/features/coffee/add_coffee_screen.dart';
 import 'package:bislerium_cafe/features/coffee/coffee_screen.dart';
@@ -6,6 +7,7 @@ import 'package:bislerium_cafe/features/member/member_screen.dart';
 import 'package:bislerium_cafe/features/orders/order_screen.dart';
 import 'package:bislerium_cafe/features/payment/payment_screen.dart';
 import 'package:bislerium_cafe/features/test.dart';
+import 'package:bislerium_cafe/features/transaction/transaction_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -25,7 +27,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: OrderScreen(),
+      home: LoginScreen(),
     );
   }
 }

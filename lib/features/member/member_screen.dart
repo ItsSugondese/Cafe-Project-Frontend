@@ -1,4 +1,5 @@
 import 'package:bislerium_cafe/features/member/member-service/member_service.dart';
+import 'package:bislerium_cafe/helper/drawer.dart';
 import 'package:bislerium_cafe/model/member/member.dart';
 import 'package:flutter/material.dart';
 
@@ -21,8 +22,9 @@ class _MemberScreenState extends State<MemberScreen> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Table Example'),
+          title: Text('Member'),
         ),
+        drawer: MyDrawer(),
         body: FutureBuilder<List<Member>>(
           future: membersFuture,
           builder: (context, snapshot) {
